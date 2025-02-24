@@ -8,17 +8,22 @@ module.exports = {
   devServer: { port: 3000 },
   output: { publicPath: "http://localhost:3000/" },
   plugins: [
+    new HtmlWebpackPlugin({ template: "./public/index.html" }),
     new ModuleFederationPlugin({
-      name: "appA",
+      name: "mainer",
       remotes: {
-        appB: "appB@http://localhost:3001/remoteEntry.js",
+        header: "header@http://localhost:3001/remoteEntry.js",
       },
       shared: {
-        "react": { singleton: true, requiredVersion: "19.0.0" },
-        "react-dom": { singleton: true, requiredVersion: "19.0.0" }
+        react: {
+          eager: true,
+        },
+        "react-dom": {
+          eager: true,
+        },
       },
     }),
-    new HtmlWebpackPlugin({ template: "./public/index.html" }),
+    
   ],
   module: {
     rules: [
